@@ -29,36 +29,6 @@ const HomePage = () => {
         fetchProducts();
     }, []);
 
-    // Handle adding a product to the cart
-    const handleAddToCart = async (productId, count) => {
-        try {
-            const cartData = {
-                cartHeader: {
-                    userId: localStorage.getItem("userId"), // Assuming you store user info in localStorage
-                },
-                cartDetails: [
-                    {
-                        count,
-                        productId,
-                    },
-                ],
-            };
-
-            const response = await axios.post("https://localhost:7002/api/cart/upsert", cartData, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Assuming JWT token is stored in localStorage
-                },
-            });
-
-            if (response.data.isSuccess) {
-                alert("Item has been added to the Shopping Cart!");
-            } else {
-                alert(response.data.message || "Failed to add item to cart.");
-            }
-        } catch (err) {
-            alert("An error occurred while adding the product to the cart.");
-        }
-    };
 
     if (loading) return <div>Loading...</div>;
 
@@ -92,14 +62,8 @@ const HomePage = () => {
                                 ></p>
 
 
-                                <div className="d-flex justify-content-between align-items-center">
+                                <div className="d-flex justify-content-center align-items-center">
                                     {/* Add to Cart Button */}
-                                    <button
-                                        className="btn btn-primary"
-                                        onClick={() => handleAddToCart(product.productId, 1)} // Adding 1 item for simplicity
-                                    >
-                                        Add to Cart
-                                    </button>
                                     <button
                                         className="btn btn-secondary"
                                         onClick={() => navigate(`/product/${product.productId}`)}
