@@ -14,8 +14,8 @@ import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
         {/* Bootstrap Navbar */}
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
           <div className="container-fluid">
@@ -28,17 +28,22 @@ function App() {
                 <li className="nav-item">
                   <Link className="nav-link active" aria-current="page" to="/">Home</Link>
                 </li>
-                <li className="nav-item dropdown">
-                  <button type="button" className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Content Management
-                  </button>
-                  <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><Link className="dropdown-item" to="/coupon">Coupon</Link></li>
-                    <li><Link className="dropdown-item" to="/">Product</Link></li>
-                    <li><hr className="dropdown-divider" /></li>
-                    <li><Link className="dropdown-item" to="/">Something else here</Link></li>
-                  </ul>
-                </li>
+                <AuthContext.Consumer>
+                  {({ role }) =>
+                    role === "ADMIN" && (
+                      <li className="nav-item dropdown">
+                        <button type="button" className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Content Management
+                        </button>
+                        <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <li><Link className="dropdown-item" to="/coupon">Coupon</Link></li>
+                          <li><Link className="dropdown-item" to="/">Product</Link></li>
+                          <li><hr className="dropdown-divider" /></li>
+                          <li><Link className="dropdown-item" to="/">Something else here</Link></li>
+                        </ul>
+                      </li>)
+                  }
+                </AuthContext.Consumer>
                 <li className="nav-item">
                   <Link className="nav-link disabled" aria-disabled="true">Disabled</Link>
                 </li>
@@ -87,7 +92,7 @@ function App() {
           <Route
             path="/coupon"
             element={
-              <PrivateRoute>
+              <PrivateRoute requiredRole="ADMIN">
                 <Coupon />
               </PrivateRoute>
             }
@@ -95,7 +100,7 @@ function App() {
           <Route
             path="/coupon/createCoupon"
             element={
-              <PrivateRoute>
+              <PrivateRoute requiredRole="ADMIN">
                 <CouponCreate />
               </PrivateRoute>
             }
@@ -103,7 +108,7 @@ function App() {
           <Route
             path="/coupon/couponEdit/:id"
             element={
-              <PrivateRoute>
+              <PrivateRoute requiredRole="ADMIN">
                 <CouponEdit />
               </PrivateRoute>
             }
@@ -111,15 +116,15 @@ function App() {
           <Route
             path="/coupon/couponDelete/:id"
             element={
-              <PrivateRoute>
+              <PrivateRoute requiredRole="ADMIN">
                 <CouponDelete />
               </PrivateRoute>
             }
           />
         </Routes>
-      </Router>
-      <ToastContainer /> 
-    </AuthProvider>
+        <ToastContainer />
+      </AuthProvider>
+    </Router>
   );
 }
 
