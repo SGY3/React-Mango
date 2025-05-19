@@ -1,4 +1,3 @@
-// src/pages/Login.js
 import { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -8,9 +7,10 @@ import endpoints from "../api/endpoints";
 const Login = () => {
   const [formData, setFormData] = useState({ userName: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false); // <-- loading state
 
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext); // <-- use context here
+  const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setFormData({
@@ -21,21 +21,22 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // start loading
 
     try {
       const response = await axios.post(endpoints.auth.login, formData);
 
       if (response.data.isSuccess) {
         const { token, user } = response.data.result;
-
-        login(user, token); // <-- use context login
-
+        login(user, token);
         navigate("/");
       } else {
         setErrorMessage(response.data.message || "Login failed. Please try again.");
       }
     } catch (err) {
       setErrorMessage("An error occurred. Please try again later.");
+    } finally {
+      setLoading(false); // stop loading
     }
   };
 
@@ -70,7 +71,16 @@ const Login = () => {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary w-100">Login</button>
+        <button type="submit" className="btn btn-primary w-100" disabled={loading}>
+          {loading ? (
+            <>
+              <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Logging in...
+            </>
+          ) : (
+            "Login"
+          )}
+        </button>
       </form>
     </div>
   );

@@ -12,7 +12,8 @@ const endpoints = {
   product: {
     getAll: `${PRODUCT_BASE}`,
     getById: (id) => `${PRODUCT_BASE}/${id}`,
-    add: `${PRODUCT_BASE}/Add`,
+    save: `${PRODUCT_BASE}`,
+    delete: (id) => `${PRODUCT_BASE}/${id}`
   },
   cart: {
     getCart: (userId) => `${CART_BASE}/GetCart/${userId}`,

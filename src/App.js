@@ -10,6 +10,10 @@ import { AuthProvider, AuthContext } from "./context/AuthContext"; // <-- Import
 import ProductDetails from "./pages/ProductDetails";
 import PrivateRoute from "./components/PrivateRoute";
 import { ToastContainer } from 'react-toastify';
+import ProductIndex from "./pages/productView/ProductIndex";
+import ProductCreate from "./pages/productView/ProductCreate";
+import ProductEdit from "./pages/productView/ProductEdit";
+import ProductDelete from "./pages/productView/ProductDelete";
 
 
 function App() {
@@ -37,7 +41,7 @@ function App() {
                         </button>
                         <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                           <li><Link className="dropdown-item" to="/coupon">Coupon</Link></li>
-                          <li><Link className="dropdown-item" to="/">Product</Link></li>
+                          <li><Link className="dropdown-item" to="/productIndex">Product</Link></li>
                           <li><hr className="dropdown-divider" /></li>
                           <li><Link className="dropdown-item" to="/">Something else here</Link></li>
                         </ul>
@@ -121,10 +125,35 @@ function App() {
               </PrivateRoute>
             }
           />
+
+          <Route path="/ProductIndex" element={
+            <PrivateRoute requiredRole="ADMIN">
+              <ProductIndex />
+            </PrivateRoute>
+          }
+          />
+          <Route path="/ProductCreate" element={
+            <PrivateRoute requiredRole="ADMIN">
+              <ProductCreate />
+            </PrivateRoute>
+          }
+          />
+          <Route path="/ProductEdit/:id" element={
+            <PrivateRoute requiredRole="ADMIN">
+              <ProductEdit />
+            </PrivateRoute>
+          }
+          />
+          <Route path="/ProductDelete/:id" element={
+            <PrivateRoute requiredRole="ADMIN">
+              <ProductDelete />
+            </PrivateRoute>
+          }
+          />
         </Routes>
         <ToastContainer />
       </AuthProvider>
-    </Router>
+    </Router >
   );
 }
 
