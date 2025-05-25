@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import endpoints from "../api/endpoints";
+import { AuthContext } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const ProductDetails = () => {
     const navigate = useNavigate();
@@ -10,6 +12,7 @@ const ProductDetails = () => {
     const [count, setCount] = useState(1);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
+    const { user, token, logout } = useContext(AuthContext);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -30,7 +33,47 @@ const ProductDetails = () => {
         fetchProduct();
     }, [id]);
 
-    const handleAddToCart = () => { }
+    const handleAddToCart = async () => {
+        if (!user?.id) {
+            toast.error('User is not authenticated');
+            logout();
+            navigate('/login');
+            return;
+        }
+        try {
+            const cartPayload = {
+                cartHeader: {
+                    userId: user.id
+                },
+                cartDetails: [
+                    {
+                        count: parseInt(count),
+                        productId: product.productId
+                    }
+                ]
+            };
+            console.log(cartPayload);
+            const response = await axios.post(endpoints.cart.addToCart, cartPayload, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            if (response.data.isSuccess) {
+                toast.success('Product added to cart!');
+            }
+            else {
+                toast.error(response.data.message || "Failed to add product to cart.");
+            }
+
+        }
+        catch (err) {
+            console.error(err);
+            toast.error("An error occurred while adding to cart.", err);
+        }
+
+
+    }
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div className="alert alert-danger">{error}</div>;

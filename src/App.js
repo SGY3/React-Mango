@@ -14,6 +14,7 @@ import ProductIndex from "./pages/productView/ProductIndex";
 import ProductCreate from "./pages/productView/ProductCreate";
 import ProductEdit from "./pages/productView/ProductEdit";
 import ProductDelete from "./pages/productView/ProductDelete";
+import CartIndex from "./pages/CartIndex";
 
 
 function App() {
@@ -36,7 +37,7 @@ function App() {
                   {({ role }) =>
                     role === "ADMIN" && (
                       <li className="nav-item dropdown">
-                        <button type="button" className="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button type="button" className="nav-link dropdown-toggle" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                           Content Management
                         </button>
                         <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -48,6 +49,9 @@ function App() {
                       </li>)
                   }
                 </AuthContext.Consumer>
+                <li className="nac-item">
+                  <Link className="nav-link" to="/CartIndex"><i class="bi bi-cart"></i></Link>
+                </li>
                 <li className="nav-item">
                   <Link className="nav-link disabled" aria-disabled="true">Disabled</Link>
                 </li>
@@ -149,6 +153,13 @@ function App() {
               <ProductDelete />
             </PrivateRoute>
           }
+          />
+
+          <Route path="/CartIndex" element={
+            <PrivateRoute requiredRole="">
+              <CartIndex />
+            </PrivateRoute>
+          } 
           />
         </Routes>
         <ToastContainer />
