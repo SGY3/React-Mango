@@ -18,7 +18,8 @@ const endpoints = {
   cart: {
     getCart: (userId) => `${CART_BASE}/GetCart/${userId}`,
     addToCart: `${CART_BASE}/CartUpsert`,
-    removeFromCart: `${CART_BASE}/RemoveFromCart`,
+    removeFromCart: `${CART_BASE}/RemoveCart`,
+    applyCoupon:`${CART_BASE}/ApplyCoupon`
   },
   coupon: {
     getAll: `${COUPON_BASE}`,

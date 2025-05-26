@@ -14,6 +14,7 @@ const ProductIndex = () => {
         const fetchProduct = async () => {
             try {
                 const response = await axios.get(endpoints.product.getAll);
+                
                 if (response.data.isSuccess) {
                     setProducts(response.data.result);
                 } else {

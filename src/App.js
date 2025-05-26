@@ -50,7 +50,7 @@ function App() {
                   }
                 </AuthContext.Consumer>
                 <li className="nac-item">
-                  <Link className="nav-link" to="/CartIndex"><i class="bi bi-cart"></i></Link>
+                  <Link className="nav-link" to="/CartIndex"><i className="bi bi-cart"></i></Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link disabled" aria-disabled="true">Disabled</Link>
